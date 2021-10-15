@@ -2,22 +2,41 @@ import {gql} from 'apollo-server-express';
 
 const typeDefs = gql`
 scalar Date
-type Todo{
+type Researcher{
     id:ID
+    firstName:String
+    lastName:String
+    role:String
+    cell:String
+    entry_date:Date
+    career:String
+    assigned_hours:Float
+}
+type Project{
+    id:ID
+    numeral:Int
     title:String
-    detail:String
+    description:String
+    status:String
+    phase:String
+    budget:Float
     date:Date
 }
 
 type Query{
     welcome:String
-    getTodos:[Todo]
-    getTodo(id:ID):Todo
+    getResearchers:[Researcher]
+    getResearcher(id:ID):Researcher
+    getProjects:[Project]
+    getProject(id:ID):Project
 }
 type Mutation{
-    addTodo(title:String,detail:String,date:Date):Todo
-    deleteTodo(id:ID):String
-    updateTodo(id:ID,title:String,detail:String,date:Date):Todo
+    addResearcher(firstName:String,lastName:String,role:String,cell:String,entry_date:Date,career:String,assigned_hours:Float):Researcher
+    addProject(numeral:Int,title:String,description:String,status:String,phase:String,budget:Float,date:Date):Project
+    deleteResearcher(id:ID):String
+    deleteProject(id:ID):String
+    updateResearcher(id:ID,firstName:String,lastName:String,role:String,cell:String,entry_date:Date,career:String,assigned_hours:Float):Researcher
+    updateProject(id:ID,title:String,description:String,status:String,phase:String,budget:Float):Project
 }
 `
 

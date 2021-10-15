@@ -1,46 +1,108 @@
-import Todo from "./models/Todo.js";
+import Researcher from "./models/Researchers.js";
+import Project from "./models/projects.js";
 
 const resolvers = {
     Query:{
         welcome:()=>{
             return "bienvenido asbel"
         },
-        getTodos:async()=>{
-            const todos = await Todo.find()
-            return todos
+        getResearchers:async()=>{
+            const researchers = await Researcher.find()
+            return researchers
         },
-        getTodo:async(root,args)=>{
-            const todo = await Todo.findById(args.id)
-            return todo
+        getResearcher:async(root,args)=>{
+            const researcher = await Researcher.findById(args.id)
+            return researcher
+        },
+        getProjects:async()=>{
+            const projects = await Project.find()
+            return projects
+        },
+        getProject:async(root,args)=>{
+            const project = await Project.findById(args.id)
+            return project
         },
     },
     Mutation:{
-        addTodo:async(root,args)=>{
-            const newTodo = new Todo({
+        addResearcher:async(root,args)=>{
+            const newResearcher = new Researcher({
+                firstName:args.firstName,
+                lastName:args.lastName,
+                role:args.role,
+                cell:args.cells,
+                entry_date:args.date,
+                career:args.career,
+                assigned_hours:args.assigned_hours,
+            })
+            await newResearcher.save()
+            return newResearcher
+        },
+        deleteResearcher:async(root,args)=>{
+            await Researcher.findByIdAndDelete(args.id);
+            return "el investigador fue eliminado exitosamente"
+        },
+        updateResearcher:async(root,args)=>{
+            const {id,firstName,lastName,role,cell,entry_date,career,assigned_hours,} = args;
+            const updatedResearcher = {};
+            if (firstName != undefined){
+                updatedResearcher.firstName = firstName
+            }
+            if (lastName != undefined){
+                updatedResearcher.lastName = lastName
+            }
+            if (role != undefined){
+                updatedResearcher.role = role
+            }
+            if (cell != undefined){
+                updatedResearcher.cell = cell
+            }
+            if (entry_date != undefined){
+                updatedResearcher.entry_date = entry_date
+            }
+            if (career != undefined){
+                updatedResearcher.career = career
+            }
+            if (assigned_hours != undefined){
+                updatedResearcher.assigned_hours = assigned_hours
+            }
+            const researcher = await researcher.findByIdAndUpdate(id, updatedResearcher, { new:true })
+            return researcher;
+        },
+        addProject:async(root,args)=>{
+            const newProject = new Project({
+                numeral:args.numeral,
                 title:args.title,
-                detail:args.detail,
+                description:args.description,
+                status:args.status,
+                phase:args.phase,
+                budget:args.budget,
                 date:args.date,
             })
-            await newTodo.save()
-            return newTodo
+            await newProject.save()
+            return newProject
         },
-        deleteTodo:async(root,args)=>{
-            await Todo.findByIdAndDelete(args.id);
-            return "el todo fue eliminado exitosamente"
+        deleteProject:async(root,args)=>{
+            await Project.findByIdAndDelete(args.id);
+            return "el projecto fue eliminado exitosamente"
         },
-        updateTodo:async(root,args)=>{
-            const {id,title,detail,date} = args;
-            const updatedTodo = {};
+        updateProject:async(root,args)=>{
+            const {id,title,description,status,phase,budget} = args;
+            const updatedProject = {};
             if (title != undefined){
-                updatedTodo.title = title
+                updatedProject.title = title
             }
-            if (detail != undefined){
-                updatedTodo.detail = detail
-            }if (date != undefined){
-                updatedTodo.date = date
+            if (description != undefined){
+                updatedProject.description = description
+            }if (status != undefined){
+                updatedProject.status = status
             }
-            const todo = await Todo.findByIdAndUpdate(id, updatedTodo, { new:true })
-            return todo;
+            if (phase != undefined){
+                updatedProject.phase = phase
+            }if (budget != undefined){
+                updatedProject.budget = budget
+            }
+            const project = await Project.findByIdAndUpdate(id, updatedProject, { new:true })
+            return project;
         },
     }   
 }
