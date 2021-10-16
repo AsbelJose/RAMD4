@@ -23,7 +23,7 @@ async function initServer(){
         console.log(error)
     }
     
-    app.listen(4000, () => console.log('corriendo en el puerto 4000'));
+    app.listen(5000, () => console.log('corriendo en el puerto 5000'));
 }
 
 initServer()
